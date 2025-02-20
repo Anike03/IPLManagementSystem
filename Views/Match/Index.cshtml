@@ -1,0 +1,40 @@
+﻿@model IEnumerable<IPLManagementSystem.Models.Match>
+
+<h2>Matches</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Match ID</th>
+            <th>Match Date</th>
+            <th>Venue</th>
+            <th>Teams</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MatchId</td>
+                <td>@item.MatchDate.ToShortDateString()</td>
+                <td>@item.Venue?.Name</td>
+                <td>
+                    @foreach (var team in item.Teams)
+                    {
+                        <span>@team.TeamName</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MatchId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.MatchId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MatchId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

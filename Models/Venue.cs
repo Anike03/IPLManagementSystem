@@ -1,0 +1,30 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace IPLManagementSystem.Models
+{
+    public class Venue
+    {
+        [Key]
+        public int VenueId { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string Name { get; set; } = string.Empty; // Initialize to avoid null warnings
+
+        [Required]
+        [StringLength(100)]
+        public string Location { get; set; } = string.Empty; // Initialize to avoid null warnings
+
+        // One-to-Many Relationship: A venue can host many matches
+        public ICollection<Match> Matches { get; set; } = new List<Match>(); // Initialize to avoid null warnings
+    }
+}
+namespace IPLManagementSystem.DTOs
+{
+    public class VenueDTO
+    {
+        public int VenueId { get; set; }
+        public string VenueName { get; set; } = string.Empty;
+        public string Location { get; set; } = string.Empty;
+    }
+}

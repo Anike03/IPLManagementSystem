@@ -1,0 +1,38 @@
+﻿@model IPLManagementSystem.Models.Team
+
+<h2>Team Details</h2>
+
+<div>
+    <h4>Team</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Team ID</dt>
+        <dd class="col-sm-10">@Model.TeamId</dd>
+
+        <dt class="col-sm-2">Name</dt>
+        <dd class="col-sm-10">@Model.TeamName</dd>
+
+        <dt class="col-sm-2">Coach</dt>
+        <dd class="col-sm-10">@Model.Coach</dd>
+
+        <dt class="col-sm-2">Players</dt>
+        <dd class="col-sm-10">
+            @foreach (var player in Model.Players)
+            {
+                <span>@player.Name</span>
+            }
+        </dd>
+
+        <dt class="col-sm-2">Matches</dt>
+        <dd class="col-sm-10">
+            @foreach (var match in Model.Matches)
+            {
+                <span>@match.MatchDate.ToShortDateString()</span>
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.TeamId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<IPLManagementSystem.Models.Team>
+
+<h2>Teams</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Team ID</th>
+            <th>Name</th>
+            <th>Coach</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TeamId</td>
+                <td>@item.TeamName</td>
+                <td>@item.Coach</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TeamId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.TeamId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.TeamId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
