@@ -1,27 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using IPLManagementSystem.Models;
 using IPLManagementSystem.DTOs;
+using IPLManagementSystem.Interfaces;  // Reference the Interfaces folder
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using IPLManagementSystem.Data;
 
 namespace IPLManagementSystem.Controllers
 {
     public class PlayerController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IPlayerService _playerService;
 
-        public PlayerController(ApplicationDbContext context)
+        public PlayerController(IPlayerService playerService)
         {
-            _context = context;
+            _playerService = playerService;
         }
 
         // GET: Player
         public IActionResult Index()
         {
-            var players = _context.Players
-                .Include(p => p.Team)
-                .ToList();
+            var players = _playerService.GetAllPlayers();
             return View(players);
         }
 
@@ -33,9 +30,7 @@ namespace IPLManagementSystem.Controllers
                 return NotFound();
             }
 
-            var player = _context.Players
-                .Include(p => p.Team)
-                .FirstOrDefault(p => p.PlayerId == id);
+            var player = _playerService.GetPlayerById(id.Value);
 
             if (player == null)
             {
@@ -48,7 +43,7 @@ namespace IPLManagementSystem.Controllers
         // GET: Player/Create
         public IActionResult Create()
         {
-            ViewBag.Teams = _context.Teams.ToList();
+            ViewBag.Teams = _playerService.GetTeams();
             return View();
         }
 
@@ -59,20 +54,11 @@ namespace IPLManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var player = new Player
-                {
-                    Name = playerDTO.Name,
-                    Age = playerDTO.Age,
-                    Role = playerDTO.Role,
-                    TeamId = playerDTO.TeamId
-                };
-
-                _context.Players.Add(player);
-                _context.SaveChanges();
+                _playerService.CreatePlayer(playerDTO);
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Teams = _context.Teams.ToList();
+            ViewBag.Teams = _playerService.GetTeams();
             return View(playerDTO);
         }
 
@@ -84,7 +70,7 @@ namespace IPLManagementSystem.Controllers
                 return NotFound();
             }
 
-            var player = _context.Players.Find(id);
+            var player = _playerService.GetPlayerById(id.Value);
 
             if (player == null)
             {
@@ -100,7 +86,7 @@ namespace IPLManagementSystem.Controllers
                 TeamId = player.TeamId
             };
 
-            ViewBag.Teams = _context.Teams.ToList();
+            ViewBag.Teams = _playerService.GetTeams();
             return View(playerDTO);
         }
 
@@ -116,24 +102,11 @@ namespace IPLManagementSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                var player = _context.Players.Find(id);
-
-                if (player == null)
-                {
-                    return NotFound();
-                }
-
-                player.Name = playerDTO.Name;
-                player.Age = playerDTO.Age;
-                player.Role = playerDTO.Role;
-                player.TeamId = playerDTO.TeamId;
-
-                _context.Update(player);
-                _context.SaveChanges();
+                _playerService.UpdatePlayer(id, playerDTO);
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Teams = _context.Teams.ToList();
+            ViewBag.Teams = _playerService.GetTeams();
             return View(playerDTO);
         }
 
@@ -145,9 +118,7 @@ namespace IPLManagementSystem.Controllers
                 return NotFound();
             }
 
-            var player = _context.Players
-                .Include(p => p.Team)
-                .FirstOrDefault(p => p.PlayerId == id);
+            var player = _playerService.GetPlayerById(id.Value);
 
             if (player == null)
             {
@@ -162,14 +133,7 @@ namespace IPLManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var player = _context.Players.Find(id);
-            if (player == null)
-            {
-                return NotFound();
-            }
-
-            _context.Players.Remove(player);
-            _context.SaveChanges();
+            _playerService.DeletePlayer(id);
             return RedirectToAction(nameof(Index));
         }
     }

@@ -1,4 +1,6 @@
 ﻿using IPLManagementSystem.Data;
+using IPLManagementSystem.Interfaces;
+using IPLManagementSystem.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,22 +10,30 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
+// Register the ApplicationDbContext for Identity and application data
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+// Configure Identity with custom options
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false; // Change to true if email confirmation is required
 })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddRazorPages();
+// Register services
+builder.Services.AddScoped<IMatchService, MatchService>();
+builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<IVenueService, VenueService>();
+
+// Add MVC and API controllers
 builder.Services.AddControllersWithViews();  // For MVC controllers
 builder.Services.AddControllers();  // For API controllers
 
-// Add Swagger services
+// Add Swagger services for API documentation
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -78,10 +88,12 @@ app.Use(async (context, next) =>
     await next();
 });
 
+// Map default controller route for MVC
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+// Map Razor Pages for Identity
 app.MapRazorPages();
 
 app.Run();

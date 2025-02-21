@@ -1,28 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using IPLManagementSystem.Models;
 using IPLManagementSystem.DTOs;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using IPLManagementSystem.Data;
+using IPLManagementSystem.Services;
+using IPLManagementSystem.Interfaces;
 
 namespace IPLManagementSystem.Controllers
 {
     public class MatchController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IMatchService _matchService;
 
-        public MatchController(ApplicationDbContext context)
+        public MatchController(IMatchService matchService)
         {
-            _context = context;
+            _matchService = matchService;
         }
 
         // GET: Match
         public IActionResult Index()
         {
-            var matches = _context.Matches
-                .Include(m => m.Venue)
-                .Include(m => m.Teams)
-                .ToList();
+            var matches = _matchService.GetAllMatches();
             return View(matches);
         }
 
@@ -34,11 +30,7 @@ namespace IPLManagementSystem.Controllers
                 return NotFound();
             }
 
-            var match = _context.Matches
-                .Include(m => m.Venue)
-                .Include(m => m.Teams)
-                .FirstOrDefault(m => m.MatchId == id);
-
+            var match = _matchService.GetMatchById(id.Value);
             if (match == null)
             {
                 return NotFound();
@@ -50,8 +42,8 @@ namespace IPLManagementSystem.Controllers
         // GET: Match/Create
         public IActionResult Create()
         {
-            ViewBag.Venues = _context.Venues.ToList();
-            ViewBag.Teams = _context.Teams.ToList();
+            ViewBag.Venues = _matchService.GetVenues();
+            ViewBag.Teams = _matchService.GetTeams();
             return View();
         }
 
@@ -62,20 +54,12 @@ namespace IPLManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var match = new Match
-                {
-                    MatchDate = matchDTO.MatchDate,
-                    VenueId = matchDTO.VenueId,
-                    Teams = _context.Teams.Where(t => matchDTO.TeamIds.Contains(t.TeamId)).ToList()
-                };
-
-                _context.Matches.Add(match);
-                _context.SaveChanges();
+                _matchService.CreateMatch(matchDTO);
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Venues = _context.Venues.ToList();
-            ViewBag.Teams = _context.Teams.ToList();
+            ViewBag.Venues = _matchService.GetVenues();
+            ViewBag.Teams = _matchService.GetTeams();
             return View(matchDTO);
         }
 
@@ -87,11 +71,7 @@ namespace IPLManagementSystem.Controllers
                 return NotFound();
             }
 
-            var match = _context.Matches
-                .Include(m => m.Venue)
-                .Include(m => m.Teams)
-                .FirstOrDefault(m => m.MatchId == id);
-
+            var match = _matchService.GetMatchById(id.Value);
             if (match == null)
             {
                 return NotFound();
@@ -105,8 +85,8 @@ namespace IPLManagementSystem.Controllers
                 TeamIds = match.Teams.Select(t => t.TeamId).ToList()
             };
 
-            ViewBag.Venues = _context.Venues.ToList();
-            ViewBag.Teams = _context.Teams.ToList();
+            ViewBag.Venues = _matchService.GetVenues();
+            ViewBag.Teams = _matchService.GetTeams();
             return View(matchDTO);
         }
 
@@ -122,26 +102,12 @@ namespace IPLManagementSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                var match = _context.Matches
-                    .Include(m => m.Teams)
-                    .FirstOrDefault(m => m.MatchId == id);
-
-                if (match == null)
-                {
-                    return NotFound();
-                }
-
-                match.MatchDate = matchDTO.MatchDate;
-                match.VenueId = matchDTO.VenueId;
-                match.Teams = _context.Teams.Where(t => matchDTO.TeamIds.Contains(t.TeamId)).ToList();
-
-                _context.Update(match);
-                _context.SaveChanges();
+                _matchService.UpdateMatch(id, matchDTO);
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Venues = _context.Venues.ToList();
-            ViewBag.Teams = _context.Teams.ToList();
+            ViewBag.Venues = _matchService.GetVenues();
+            ViewBag.Teams = _matchService.GetTeams();
             return View(matchDTO);
         }
 
@@ -153,11 +119,7 @@ namespace IPLManagementSystem.Controllers
                 return NotFound();
             }
 
-            var match = _context.Matches
-                .Include(m => m.Venue)
-                .Include(m => m.Teams)
-                .FirstOrDefault(m => m.MatchId == id);
-
+            var match = _matchService.GetMatchById(id.Value);
             if (match == null)
             {
                 return NotFound();
@@ -171,14 +133,7 @@ namespace IPLManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var match = _context.Matches.Find(id);
-            if (match == null)
-            {
-                return NotFound();
-            }
-
-            _context.Matches.Remove(match);
-            _context.SaveChanges();
+            _matchService.DeleteMatch(id);
             return RedirectToAction(nameof(Index));
         }
     }

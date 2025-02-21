@@ -1,6 +1,4 @@
-﻿using Humanizer.Localisation;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPLManagementSystem.Models
@@ -25,13 +23,4 @@ namespace IPLManagementSystem.Models
     }
 }
 
-namespace IPLManagementSystem.DTOs
-{
-    public class MatchDTO
-    {
-        public int MatchId { get; set; }
-        public DateTime MatchDate { get; set; }
-        public int VenueId { get; set; }
-        public List<int> TeamIds { get; set; } = new List<int>();
-    }
-}
+
