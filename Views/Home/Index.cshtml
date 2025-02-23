@@ -14,31 +14,52 @@
 
 <!-- Features Section -->
 <div class="container my-5">
+    <h2 class="text-center mb-4">Features</h2>
     <div class="row">
-        <div class="col-md-4">
-            <div class="card shadow-sm">
+        <!-- Players Card -->
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm h-100">
                 <div class="card-body text-center">
+                    <i class="fas fa-users fa-3x mb-3 text-primary"></i>
                     <h5 class="card-title">Players</h5>
-                    <p class="card-text">Manage player details, roles, performance and statistics.</p>
-                    <a asp-controller="Players" asp-action="Index" class="btn btn-outline-primary">View Players</a>
+                    <p class="card-text">Manage player details, roles, performance, and statistics.</p>
+                    <a asp-controller="Player" asp-action="Index" class="btn btn-outline-primary">View Players</a>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm">
+
+        <!-- Teams Card -->
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm h-100">
                 <div class="card-body text-center">
+                    <i class="fas fa-users-cog fa-3x mb-3 text-primary"></i>
                     <h5 class="card-title">Teams</h5>
                     <p class="card-text">Manage team details, players, and performance.</p>
-                    <a asp-controller="Teams" asp-action="Index" class="btn btn-outline-primary">View Teams</a>
+                    <a asp-controller="Team" asp-action="Index" class="btn btn-outline-primary">View Teams</a>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm">
+
+        <!-- Matches Card -->
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm h-100">
                 <div class="card-body text-center">
+                    <i class="fas fa-calendar-alt fa-3x mb-3 text-primary"></i>
                     <h5 class="card-title">Matches</h5>
                     <p class="card-text">Schedule and manage match details and results.</p>
-                    <a asp-controller="Matches" asp-action="Index" class="btn btn-outline-primary">View Matches</a>
+                    <a asp-controller="Match" asp-action="Index" class="btn btn-outline-primary">View Matches</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Venues Card -->
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-map-marker-alt fa-3x mb-3 text-primary"></i>
+                    <h5 class="card-title">Venues</h5>
+                    <p class="card-text">Manage venue details and locations.</p>
+                    <a asp-controller="Venue" asp-action="Index" class="btn btn-outline-primary">View Venues</a>
                 </div>
             </div>
         </div>
@@ -52,7 +73,6 @@
         <p class="text-center lead">
             The IPL Management System is designed to streamline the management of players, teams, and matches in the Indian Premier League. With easy-to-use interfaces and powerful APIs, you can efficiently manage all aspects of the tournament.
         </p>
-        <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        <p class="text-center">Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     </div>
 </div>
-

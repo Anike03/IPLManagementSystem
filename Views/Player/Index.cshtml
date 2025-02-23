@@ -1,11 +1,14 @@
 ﻿@model IEnumerable<IPLManagementSystem.Models.Player>
 
-<h2>Players</h2>
+@{
+    ViewData["Title"] = "Players";
+}
+
+<h1>Players</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-
 <table class="table">
     <thead>
         <tr>
@@ -18,18 +21,18 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var player in Model)
         {
             <tr>
-                <td>@item.PlayerId</td>
-                <td>@item.Name</td>
-                <td>@item.Age</td>
-                <td>@item.Role</td>
-                <td>@item.Team?.TeamName</td>
+                <td>@player.PlayerId</td>
+                <td>@player.Name</td>
+                <td>@player.Age</td>
+                <td>@player.Role</td>
+                <td>@player.Team.TeamName</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.PlayerId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.PlayerId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.PlayerId">Delete</a>
+                    <a asp-action="Details" asp-route-id="@player.PlayerId">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@player.PlayerId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@player.PlayerId">Delete</a>
                 </td>
             </tr>
         }

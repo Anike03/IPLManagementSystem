@@ -1,6 +1,10 @@
 ﻿@model IPLManagementSystem.Models.Match
 
-<h2>Match Details</h2>
+@{
+    ViewData["Title"] = "Match Details";
+}
+
+<h1>Match Details</h1>
 
 <div>
     <h4>Match</h4>
@@ -13,13 +17,15 @@
         <dd class="col-sm-10">@Model.MatchDate.ToShortDateString()</dd>
 
         <dt class="col-sm-2">Venue</dt>
-        <dd class="col-sm-10">@Model.Venue?.Name</dd>
+        <dd class="col-sm-10">@Model.Venue.Name</dd>
 
         <dt class="col-sm-2">Teams</dt>
         <dd class="col-sm-10">
             @foreach (var team in Model.Teams)
             {
                 <span>@team.TeamName</span>
+
+                <br />
             }
         </dd>
     </dl>

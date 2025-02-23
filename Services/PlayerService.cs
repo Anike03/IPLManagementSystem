@@ -67,10 +67,5 @@ namespace IPLManagementSystem.Services
             _context.Players.Remove(player);
             _context.SaveChanges();
         }
-
-        public List<Team> GetTeams()
-        {
-            return [.. _context.Teams]; // Simplified collection initialization
-        }
     }
 }

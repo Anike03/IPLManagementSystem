@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using IPLManagementSystem.Models; // Add this line
-using IPLManagementSystem.DTOs;
 using IPLManagementSystem.Interfaces;
+using IPLManagementSystem.DTOs;
+using IPLManagementSystem.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace IPLManagementSystem.Controllers
 {
@@ -16,39 +18,53 @@ namespace IPLManagementSystem.Controllers
             _matchService = matchService;
         }
 
+        // GET: api/MatchApi
         [HttpGet]
         public ActionResult<IEnumerable<Match>> GetMatches()
         {
-            return Ok(_matchService.GetAllMatches());
+            var matches = _matchService.GetAllMatches();
+            return Ok(matches);
         }
 
+        // GET: api/MatchApi/5
         [HttpGet("{id}")]
         public ActionResult<Match> GetMatch(int id)
         {
             var match = _matchService.GetMatchById(id);
             if (match == null)
+            {
                 return NotFound();
-
+            }
             return Ok(match);
         }
 
+        // POST: api/MatchApi
         [HttpPost]
-        public IActionResult CreateMatch([FromBody] MatchDTO matchDTO)
+        public ActionResult<Match> CreateMatch([FromBody] MatchDTO matchDTO)
         {
+            if (matchDTO.TeamIds == null || matchDTO.TeamIds.Count != 2)
+            {
+                return BadRequest("Please select exactly two teams.");
+            }
+
             _matchService.CreateMatch(matchDTO);
             return CreatedAtAction(nameof(GetMatch), new { id = matchDTO.MatchId }, matchDTO);
         }
 
+        // PUT: api/MatchApi/5
         [HttpPut("{id}")]
         public IActionResult UpdateMatch(int id, [FromBody] MatchDTO matchDTO)
         {
-            if (id != matchDTO.MatchId)
-                return BadRequest();
+            if (matchDTO.TeamIds == null || matchDTO.TeamIds.Count != 2)
+            {
+                return BadRequest("Please select exactly two teams.");
+            }
 
             _matchService.UpdateMatch(id, matchDTO);
             return NoContent();
         }
 
+        // DELETE: api/MatchApi/5
         [HttpDelete("{id}")]
         public IActionResult DeleteMatch(int id)
         {

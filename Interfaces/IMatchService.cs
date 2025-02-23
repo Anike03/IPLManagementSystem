@@ -7,11 +7,9 @@ namespace IPLManagementSystem.Interfaces
     public interface IMatchService
     {
         IEnumerable<Match> GetAllMatches();
-        Match? GetMatchById(int id); // Add nullable return type
+        Match? GetMatchById(int id);
         void CreateMatch(MatchDTO matchDTO);
         void UpdateMatch(int id, MatchDTO matchDTO);
         void DeleteMatch(int id);
-        List<Venue> GetVenues();
-        List<Team> GetTeams();
     }
 }

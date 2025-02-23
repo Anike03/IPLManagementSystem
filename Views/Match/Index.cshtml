@@ -1,6 +1,10 @@
 ﻿@model IEnumerable<IPLManagementSystem.Models.Match>
 
-<h2>Matches</h2>
+@{
+    ViewData["Title"] = "Matches";
+}
+
+<h1>Matches</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -17,22 +21,17 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var match in Model)
         {
             <tr>
-                <td>@item.MatchId</td>
-                <td>@item.MatchDate.ToShortDateString()</td>
-                <td>@item.Venue?.Name</td>
+                <td>@match.MatchId</td>
+                <td>@match.MatchDate.ToString("MM/dd/yyyy hh:mm tt")</td> <!-- Updated line -->
+                <td>@match.Venue.Name</td>
+                <td>@string.Join(" vs ", match.Teams.Select(t => t.TeamName))</td>
                 <td>
-                    @foreach (var team in item.Teams)
-                    {
-                        <span>@team.TeamName</span>
-                    }
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.MatchId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.MatchId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.MatchId">Delete</a>
+                    <a asp-action="Details" asp-route-id="@match.MatchId">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@match.MatchId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@match.MatchId">Delete</a>
                 </td>
             </tr>
         }

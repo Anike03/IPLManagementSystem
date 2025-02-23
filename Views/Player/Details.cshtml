@@ -1,6 +1,10 @@
 ﻿@model IPLManagementSystem.Models.Player
 
-<h2>Player Details</h2>
+@{
+    ViewData["Title"] = "Player Details";
+}
+
+<h1>Player Details</h1>
 
 <div>
     <h4>Player</h4>
@@ -19,7 +23,7 @@
         <dd class="col-sm-10">@Model.Role</dd>
 
         <dt class="col-sm-2">Team</dt>
-        <dd class="col-sm-10">@Model.Team?Name</dd>
+        <dd class="col-sm-10">@Model.Team.TeamName</dd>
     </dl>
 </div>
 <div>

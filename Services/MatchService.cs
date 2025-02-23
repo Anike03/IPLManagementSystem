@@ -54,7 +54,7 @@ namespace IPLManagementSystem.Services
 
             match.MatchDate = matchDTO.MatchDate;
             match.VenueId = matchDTO.VenueId;
-            match.Teams = [.. _context.Teams.Where(t => matchDTO.TeamIds.Contains(t.TeamId))];
+            match.Teams = _context.Teams.Where(t => matchDTO.TeamIds.Contains(t.TeamId)).ToList();
 
             _context.Matches.Update(match);
             _context.SaveChanges();
@@ -68,16 +68,6 @@ namespace IPLManagementSystem.Services
 
             _context.Matches.Remove(match);
             _context.SaveChanges();
-        }
-
-        public List<Venue> GetVenues()
-        {
-            return [.. _context.Venues]; // Simplified collection initialization
-        }
-
-        public List<Team> GetTeams()
-        {
-            return [.. _context.Teams]; // Simplified collection initialization
         }
     }
 }

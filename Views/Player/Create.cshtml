@@ -1,6 +1,10 @@
 ﻿@model IPLManagementSystem.DTOs.PlayerDTO
 
-<h2>Create Player</h2>
+@{
+    ViewData["Title"] = "Create Player";
+}
+
+<h1>Create Player</h1>
 
 <form asp-action="Create">
     <div class="form-group">
@@ -20,7 +24,9 @@
     </div>
     <div class="form-group">
         <label asp-for="TeamId" class="control-label"></label>
-        <select asp-for="TeamId" class="form-control" asp-items="ViewBag.Teams"></select>
+        <select asp-for="TeamId" class="form-control" asp-items="ViewBag.Teams">
+            <option value="">-- Select Team --</option>
+        </select>
         <span asp-validation-for="TeamId" class="text-danger"></span>
     </div>
     <div class="form-group">
