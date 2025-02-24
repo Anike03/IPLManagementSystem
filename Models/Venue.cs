@@ -4,7 +4,7 @@ namespace IPLManagementSystem.Models
 {
     public class Venue
     {
-        internal object Id;
+        internal object? Id;
 
         [Key]
         public int VenueId { get; set; }

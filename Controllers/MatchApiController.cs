@@ -3,7 +3,6 @@ using IPLManagementSystem.Interfaces;
 using IPLManagementSystem.DTOs;
 using IPLManagementSystem.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace IPLManagementSystem.Controllers
 {
@@ -18,58 +17,71 @@ namespace IPLManagementSystem.Controllers
             _matchService = matchService;
         }
 
-        // GET: api/MatchApi
+        // GET: api/match
         [HttpGet]
         public ActionResult<IEnumerable<Match>> GetMatches()
         {
-            var matches = _matchService.GetAllMatches();
-            return Ok(matches);
+            return Ok(_matchService.GetAllMatches());
         }
 
-        // GET: api/MatchApi/5
+        // GET: api/match/{id}
         [HttpGet("{id}")]
         public ActionResult<Match> GetMatch(int id)
         {
             var match = _matchService.GetMatchById(id);
             if (match == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Match not found" });
             }
             return Ok(match);
         }
 
-        // POST: api/MatchApi
+        // POST: api/match
         [HttpPost]
-        public ActionResult<Match> CreateMatch([FromBody] MatchDTO matchDTO)
+        public ActionResult CreateMatch([FromBody] MatchDTO matchDTO)
         {
             if (matchDTO.TeamIds == null || matchDTO.TeamIds.Count != 2)
             {
-                return BadRequest("Please select exactly two teams.");
+                return BadRequest(new { message = "Exactly two teams must be selected." });
             }
 
             _matchService.CreateMatch(matchDTO);
             return CreatedAtAction(nameof(GetMatch), new { id = matchDTO.MatchId }, matchDTO);
         }
 
-        // PUT: api/MatchApi/5
+        // PUT: api/match/{id}
         [HttpPut("{id}")]
-        public IActionResult UpdateMatch(int id, [FromBody] MatchDTO matchDTO)
+        public ActionResult UpdateMatch(int id, [FromBody] MatchDTO matchDTO)
         {
             if (matchDTO.TeamIds == null || matchDTO.TeamIds.Count != 2)
             {
-                return BadRequest("Please select exactly two teams.");
+                return BadRequest(new { message = "Exactly two teams must be selected." });
             }
 
-            _matchService.UpdateMatch(id, matchDTO);
-            return NoContent();
+            try
+            {
+                _matchService.UpdateMatch(id, matchDTO);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(new { message = "Match not found" });
+            }
         }
 
-        // DELETE: api/MatchApi/5
+        // DELETE: api/match/{id}
         [HttpDelete("{id}")]
-        public IActionResult DeleteMatch(int id)
+        public ActionResult DeleteMatch(int id)
         {
-            _matchService.DeleteMatch(id);
-            return NoContent();
+            try
+            {
+                _matchService.DeleteMatch(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(new { message = "Match not found" });
+            }
         }
     }
 }
