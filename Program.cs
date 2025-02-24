@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -19,7 +19,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 // Configure Identity with custom options
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = false; // Change to true if email confirmation is required
+    options.SignIn.RequireConfirmedAccount = false; 
 })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -29,11 +29,11 @@ builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IVenueService, VenueService>();
 
-// Add MVC and API controllers
+// MVC and API controllers
 builder.Services.AddControllersWithViews();  // For MVC controllers
 builder.Services.AddControllers();  // For API controllers
 
-// Add Swagger services for API documentation
+// Swagger services for API documentation
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo

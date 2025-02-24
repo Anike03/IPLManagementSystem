@@ -2,16 +2,14 @@
 using IPLManagementSystem.Interfaces;
 using IPLManagementSystem.DTOs;
 using IPLManagementSystem.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc.Rendering; // Add this for SelectList
+using Microsoft.AspNetCore.Mvc.Rendering; 
 
 namespace IPLManagementSystem.Controllers
 {
     public class MatchController : Controller
     {
         private readonly IMatchService _matchService;
-        private readonly ApplicationDbContext _context; // Add this to fetch venues and teams
+        private readonly ApplicationDbContext _context; //fetch venues and teams
 
         public MatchController(IMatchService matchService, ApplicationDbContext context)
         {

@@ -2,8 +2,6 @@
 using IPLManagementSystem.Interfaces;
 using IPLManagementSystem.DTOs;
 using IPLManagementSystem.Models;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace IPLManagementSystem.Controllers.Api
 {

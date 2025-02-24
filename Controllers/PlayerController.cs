@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using IPLManagementSystem.Interfaces;
 using IPLManagementSystem.DTOs;
-using IPLManagementSystem.Models;
 using IPLManagementSystem.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IPLManagementSystem.Controllers

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using IPLManagementSystem.Models;
 using IPLManagementSystem.DTOs;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using IPLManagementSystem.Data;
 
